@@ -1,8 +1,10 @@
 #coding: utf-8
 from JTools import JToolsClass
+from FileUtils import FileUtilsClass
 
 class MainClass:
     jtools = JToolsClass()
+    fileUtils = FileUtilsClass()
     def __init__(self):
         self.jtools.clear()
         self.executar()
@@ -22,10 +24,14 @@ class MainClass:
                 print("\n[ERRO] A quantidade deve está entre 3 e 99 iterações.")
 
         self.jtools.clear()
+        return qtd_iteracoes
 
     def executar(self):
         print("\n\n\t\t\t\t\t::::Quantização Vetorial de Imagem::::")
-        self.definirIteracoes()
+        qtd_iteracoes = self.definirIteracoes()
+        self.fileUtils.pgmread("imagens/imagem.pgm")
+        
+        #for contador in range(0,qtd_iteracoes):
 
         
 main = MainClass()   
