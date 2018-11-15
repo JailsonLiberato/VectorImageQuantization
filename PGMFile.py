@@ -2,6 +2,6 @@
 
 class PGMFileClass:
 
-    def __init__(self, size, dados):
-        self.size = size
-        self.dados = dados
+    def __init__(self, cor, dadosPGM):
+        self.cor = cor
+        self.dadosPGM = dadosPGM
