@@ -3,11 +3,13 @@ from JTools import JToolsClass
 from DadosPGM import DadosPGMClass
 from PGMFile import PGMFileClass
 from FileUtils import FileUtilsClass
+from Kmeans import KmeansClass
 import numpy as np
 
 class MainClass:
     jtools = JToolsClass()
     fileUtils = FileUtilsClass()
+    kmeans = KmeansClass()
     def __init__(self):
         self.jtools.clear()
         self.executar()
@@ -32,16 +34,17 @@ class MainClass:
     def executar(self):
         print("\n\n\t\t\t\t\t::::Quantização Vetorial de Imagem::::")
         qtd_iteracoes = self.definirIteracoes()
-        arr = self.fileUtils.pgmread("imagens/imagem2.pgm")
+        arr = self.fileUtils.pgmread("imagens/imagem.pgm")
         array = self.buscarValoresDiferentes(arr)
-        for a in array:
-            print("COR")
-            print(a.cor)
-            print("LINHA")
-            print(a.dadosPGM.linha)
-            print("COLUNA")
-            print(a.dadosPGM.coluna)
+        #for a in array:
+         #   print("COR")
+          #  print(a.cor)
+           # print("LINHA")
+            #print(a.dadosPGM.linha)
+           # print("COLUNA")
+           # print(a.dadosPGM.coluna)
         self.fileUtils.pgmwrite(arr)
+        self.kmeans.executar()
         #for contador in range(0,qtd_iteracoes):
 
     #255 -> preto

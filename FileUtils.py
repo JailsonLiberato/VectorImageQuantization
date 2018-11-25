@@ -10,5 +10,5 @@ class FileUtilsClass:
 
     def pgmwrite(self, arr):
        img = Image.fromarray(arr)
-       img.save("output.pgm")
+       img.save("saida/output.pgm")
        img.close()
