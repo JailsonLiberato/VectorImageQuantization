@@ -1,8 +1,6 @@
 #coding: utf-8
 import matplotlib.pyplot as plot 
-import pandas as pd
 from sklearn.cluster import KMeans
-from sklearn.datasets import load_sample_image
 import numpy as np
 from time import time
 from sklearn.utils import shuffle
