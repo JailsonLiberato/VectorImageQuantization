@@ -1,5 +1,5 @@
 #coding: utf-8
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plot 
 import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.datasets import load_sample_image
@@ -13,66 +13,64 @@ class KmeansClass:
 
     n_colors = 64
     
-    def recreate_image(self, codebook, labels, w, h):
-        d = codebook.shape[1]
-        image = np.zeros((w, h, d))
+    def recriar_imagem(self, dicionario, labels, width, height):
+        depth = dicionario.shape[1]
+        image = np.zeros((width, height, depth))
         label_idx = 0
-        for i in range(w):
-            for j in range(h):
-                image[i][j] = codebook[labels[label_idx]]
+        for i in range(width):
+            for j in range(height):
+                image[i][j] = dicionario[labels[label_idx]]
                 label_idx += 1
         return image
 
     def executar(self, filename):
         image = Image.open(filename)
         image = np.array(image, dtype=np.float64) / 255
-        print(image.shape)
-        
+
         #Propriedades da imagem 
-        width, height, d = tuple(image.shape)
-        print(width)
-        print(height)
-        print(d)
+        width, height, depth = tuple(image.shape)
         
-        image_array = np.reshape(image, (width * height, d))
-        print("Fitting model on a small sub-sample of the data")
-        t0 = time()
-        image_array_sample = shuffle(image_array, random_state=0)[:1000]
-        kmeans = KMeans(n_clusters = self.n_colors, random_state=0).fit(image_array_sample)
-        print("done in %0.3fs." % (time() - t0))
+        image_array = np.reshape(image, (width * height, depth))
 
-        # Get labels for all points
-        print("Predicting color indices on the full image (k-means)")
-        t0 = time()
+        print("Modelo de ajuste - subamostra dos dados")
+        tempo_inicial = time()
+        
+        #Amostra de 1000
+        image_array_amostra = shuffle(image_array, random_state=0)[:1000]
+        kmeans = KMeans(n_clusters = self.n_colors, random_state=0).fit(image_array_amostra)
+        print("Executado em %0.3fs." % (time() - tempo_inicial))
+
+        print("Prevê os indices de cores da imagem completa (k-means)")
+        tempo_inicial = time()
         labels = kmeans.predict(image_array)
-        print("done in %0.3fs." % (time() - t0))
+        print("Executado em %0.3fs." % (time() - tempo_inicial))
 
-        codebook_random = shuffle(image_array, random_state=0)[:self.n_colors]
-        print("Predicting color indices on the full image (random)")
-        t0 = time()
-        labels_random = pairwise_distances_argmin(codebook_random,
+        dicionario_dados_random = shuffle(image_array, random_state=0)[:self.n_colors]
+        print("Prevê os indices de cores de forma aleatória")
+        tempo_inicial = time()
+        labels_random = pairwise_distances_argmin(dicionario_dados_random,
                                             image_array,
                                             axis=0)
-        print("done in %0.3fs." % (time() - t0))
+        print("Executado em %0.3fs." % (time() - tempo_inicial))
 
         # Display all results, alongside original image
-        plt.figure(1)
-        plt.clf()
-        plt.axis('off')
-        plt.title('Original image (96,615 colors)')
-        plt.imshow(image)
+        plot.figure(1)
+        plot.clf()
+        plot.axis('off')
+        plot.title('Imagem original (96.615 cores)')
+        plot.imshow(image)
 
-        plt.figure(2)
-        plt.clf()
-        plt.axis('off')
-        plt.title('Quantized image (64 colors, K-Means)')
-        plt.imshow(self.recreate_image(kmeans.cluster_centers_, labels, width, height))
+        plot.figure(2)
+        plot.clf()
+        plot.axis('off')
+        plot.title('Imagem quantizada (64 cores, KMeans)')
+        plot.imshow(self.recriar_imagem(kmeans.cluster_centers_, labels, width, height))
 
-        plt.figure(3)
-        plt.clf()
-        plt.axis('off')
-        plt.title('Quantized image (64 colors, Random)')
-        plt.imshow(self.recreate_image(codebook_random, labels_random, width, height))
-        plt.show()
+        plot.figure(3)
+        plot.clf()
+        plot.axis('off')
+        plot.title('Imagem quantizada (64 cores, Aleatorio)')
+        plot.imshow(self.recriar_imagem(dicionario_dados_random, labels_random, width, height))
+        plot.show()
 
     

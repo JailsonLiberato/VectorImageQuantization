@@ -1,11 +1,9 @@
 #coding: utf-8
 from JTools import JToolsClass
-from FileUtils import FileUtilsClass
 from Kmeans import KmeansClass
 
 class MainClass:
     jtools = JToolsClass()
-    fileUtils = FileUtilsClass()
     kmeans = KmeansClass()
     def __init__(self):
         self.jtools.clear()
@@ -31,6 +29,6 @@ class MainClass:
     def executar(self):
         print("\n\n\t\t\t\t\t::::Quantização Vetorial de Imagem::::")
         #qtd_iteracoes = self.definirIteracoes()
-        self.kmeans.executar("imagens/paisagem_preto.jpg")
+        self.kmeans.executar("imagens/globo.jpg")
 
 main = MainClass()   
