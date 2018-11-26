@@ -1,7 +1,6 @@
 #coding: utf-8
 from PIL import Image
 from numpy import array
-from PGMFile import PGMFileClass
 
 class FileUtilsClass:
     def pgmread(self, filename):
