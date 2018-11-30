@@ -6,10 +6,12 @@ from time import time
 from sklearn.utils import shuffle
 from sklearn.metrics import pairwise_distances_argmin
 from PIL import Image
+from PSO import PSOClass
 
 class KmeansClass:
 
     n_colors = 64
+    pso = PSOClass()
     
     def recriar_imagem(self, dicionario, labels, width, height):
         depth = dicionario.shape[1]
@@ -29,6 +31,7 @@ class KmeansClass:
         width, height, depth = tuple(image.shape)
         
         image_array = np.reshape(image, (width * height, depth))
+        print(image_array.shape)
 
         print("Modelo de ajuste - subamostra dos dados")
         tempo_inicial = time()
@@ -41,6 +44,16 @@ class KmeansClass:
         print("Prevê os indices de cores da imagem completa (k-means)")
         tempo_inicial = time()
         labels = kmeans.predict(image_array)
+        print("Executado em %0.3fs." % (time() - tempo_inicial))
+
+
+        print("Indices de cores da imagem completa (PSO/Kmeans)")
+        tempo_inicial = time()
+        variavel = self.pso.execute(image_array)
+        print("TESTE")
+        print(variavel)
+        labels_PSO = kmeans.predict(variavel)
+        print(labels_PSO)
         print("Executado em %0.3fs." % (time() - tempo_inicial))
 
         dicionario_dados_random = shuffle(image_array, random_state=0)[:self.n_colors]
@@ -62,6 +75,8 @@ class KmeansClass:
         plot.clf()
         plot.axis('off')
         plot.title('Imagem quantizada (64 cores, KMeans)')
+        print(kmeans.cluster_centers_)
+        print(labels)
         plot.imshow(self.recriar_imagem(kmeans.cluster_centers_, labels, width, height))
 
         plot.figure(3)
@@ -69,6 +84,12 @@ class KmeansClass:
         plot.axis('off')
         plot.title('Imagem quantizada (64 cores, Aleatorio)')
         plot.imshow(self.recriar_imagem(dicionario_dados_random, labels_random, width, height))
-        plot.show()
 
+        plot.figure(4)
+        plot.clf()
+        plot.axis('off')
+        plot.title('Imagem quantizada (K-means, PSO)')
+        plot.imshow(self.recriar_imagem(kmeans.cluster_centers_, labels_PSO, width, height))
+
+        plot.show()
     
